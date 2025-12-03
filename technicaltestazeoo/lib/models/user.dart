@@ -1,3 +1,4 @@
+import 'package:technicaltestazeoo/models/birthday.dart';
 import 'package:technicaltestazeoo/models/picture.dart'; // importation du type "Picture" (car c'est à deux paramètres : "url" et "label") grâce à dart:ui
 
 class User {
@@ -9,10 +10,10 @@ class User {
   String email;
   String? info;
   // champs optionnel car soit ce ne sont pas des données réellement pertinents, soit des données comme gender où plusieurs choix sont fait.
-  List<Picture> picture; // liste avec Picture comme type (voir import en haut)
+  List<Picture>? picture; // liste avec Picture comme type (voir import en haut)
   String? countryFlag;
   String? gender;
-  String? birthday;
+  Birthday? birthday;
 
   User({
     required this.id,
@@ -27,16 +28,20 @@ class User {
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-    id: json['id'],
-    first_name: json['first_name'],
-    last_name: json['last_name'],
-    email: json['email'],
-    info: json['info'],
+    id: json['id'] as int,
+    first_name: json['first_name'].toString(),
+    last_name: json['last_name'].toString(),
+    email: json['email'].toString(),
+    info: json['info']?.toString(),
     picture:
-        (json['picture'] as List?)?.map((p) => Picture.fromJson(p)).toList() ??
+        (json['picture'] as List<dynamic>?)
+            ?.map((p) => Picture.fromJson(p as Map<String, dynamic>))
+            .toList() ??
         [],
-    countryFlag: json['countryFlag'],
-    gender: json['gender'],
-    birthday: json['birthday'],
+    countryFlag: json['country_flag']?.toString(),
+    gender: json['gender']?.toString(),
+    birthday: json['birthday'] != null
+        ? Birthday.fromJson(json['birthday'])
+        : null, // ✅ objet unique
   );
 }
