@@ -1,9 +1,13 @@
 class Picture {
-  String url;
-  String label;
+  String? url;
+  String? label;
 
-  Picture({required this.url, required this.label});
+  Picture({this.url, this.label});
 
-  factory Picture.fromJson(Map<String, dynamic> json) =>
-      Picture(url: json['url'] ?? '', label: json['label'] ?? '');
+  factory Picture.fromJson(Map<String, dynamic> json) {
+    return Picture(
+      url: json['url'] as String?,
+      label: json['label'] as String?,
+    );
+  }
 }
