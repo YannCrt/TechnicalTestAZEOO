@@ -14,7 +14,7 @@ class UserService {
       uri,
       headers: {
         "Accept-Language": "fr-FR",
-        "X-User-Id": ApiConfig.userId,
+        "X-User-Id": "1",
         "Authorization": ApiConfig.apiToken,
       },
     );
@@ -28,6 +28,29 @@ class UserService {
           jsonResponse['items']; // récupération de la liste des utilisateurs, ils sont dans "items"
       // Convertis chaque élément en User
       return jsonList.map((json) => User.fromJson(json)).toList();
+    }
+    throw Exception('Failed to load users.');
+  }
+
+  Future<User> getUserById(int id) async {
+    print("DEBUG getUserById appelé avec id: $id");
+    var client = http.Client();
+
+    var uri = Uri.parse('${ApiConfig.baseUrl}/users/$id');
+    print("DEBUG URL appelée: $uri");
+
+    var response = await client.get(
+      uri,
+      headers: {
+        "Accept-Language": "fr-FR",
+        "X-User-Id": "$id",
+        "Authorization": ApiConfig.apiToken,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+      return User.fromJson(jsonResponse);
     }
     throw Exception('Failed to load users.');
   }
