@@ -12,7 +12,12 @@ class ProfilPage extends StatelessWidget {
       valueListenable: userIdNotifier,
       builder: (context, userId, _) {
         if (userId == null) {
-          return const Center(child: Text("Aucun utilisateur choisi"));
+          return const Center(
+            child: Text(
+              "Aucun utilisateur choisi",
+              textAlign: TextAlign.center,
+            ),
+          );
         }
 
         return FutureBuilder<User>(
@@ -22,18 +27,19 @@ class ProfilPage extends StatelessWidget {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
-              return Center(
+              return const Center(
                 child: Text(
-                  "Erreur : ${snapshot.error}",
-                  style: const TextStyle(color: Colors.red),
-                  textAlign: TextAlign.center,
+                  "L'utilisateur n'existe pas",
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 66, 66, 66),
+                    fontSize: 20,
+                  ),
                 ),
               );
             }
 
             final user = snapshot.data!;
 
-            // UNE SEULE PHOTO
             final profilePic =
                 (user.picture != null && user.picture!.isNotEmpty)
                 ? user.picture!.first.url
@@ -51,21 +57,17 @@ class ProfilPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // --- PHOTO DE PROFIL ---
                       CircleAvatar(
                         radius: 60,
-                        backgroundImage:
-                            (profilePic != null && profilePic!.isNotEmpty)
-                            ? NetworkImage(profilePic!)
+                        backgroundImage: profilePic != null
+                            ? NetworkImage(profilePic)
                             : null,
-                        child: (profilePic == null || profilePic!.isEmpty)
+                        child: profilePic == null
                             ? const Icon(Icons.person, size: 60)
                             : null,
                       ),
-
                       const SizedBox(height: 20),
 
-                      // --- INFOS ---
                       Text(
                         "${user.firstName} ${user.lastName}",
                         style: const TextStyle(
@@ -73,7 +75,6 @@ class ProfilPage extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-
                       const SizedBox(height: 8),
 
                       Text(
@@ -83,39 +84,33 @@ class ProfilPage extends StatelessWidget {
                           color: Colors.black54,
                         ),
                       ),
-
                       const SizedBox(height: 8),
 
                       Text(
                         "ID : ${user.id}",
                         style: const TextStyle(fontSize: 18),
                       ),
-
                       const SizedBox(height: 8),
 
                       Text(
-                        "Birthday : ${user.birthday?.value ?? 'Pas de date'}",
+                        "Anniversaire : ${user.birthday?.value ?? 'Pas de date'}",
                         style: const TextStyle(fontSize: 18),
                       ),
-
                       const SizedBox(height: 8),
 
                       Text(
-                        "Gender : ${user.gender ?? 'Non spécifié'}",
+                        "Genre : ${user.gender ?? 'Non spécifié'}",
                         style: const TextStyle(fontSize: 18),
                       ),
-
                       const SizedBox(height: 8),
 
                       Text(
-                        "Info : ${user.info ?? 'Aucune information'}",
+                        "Information : ${user.info ?? 'Aucune information'}",
                         style: const TextStyle(fontSize: 18),
                         textAlign: TextAlign.center,
                       ),
-
                       const SizedBox(height: 16),
 
-                      // --- FLAG ---
                       if (user.countryFlag != null)
                         Image.network(
                           user.countryFlag!,
