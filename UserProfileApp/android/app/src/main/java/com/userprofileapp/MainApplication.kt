@@ -19,6 +19,7 @@ class MainApplication : Application(), ReactApplication {
         override fun getPackages(): List<ReactPackage> {
           val packages = PackageList(this).packages.toMutableList()
           packages.add(FlutterBridgePackage())
+          packages.add(UserIdPackage()) // ✅ AJOUTE CETTE LIGNE
           return packages
         }
 
@@ -36,7 +37,7 @@ class MainApplication : Application(), ReactApplication {
     if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
       load()
     }
-    
+
     // ✅ INITIALISE FLUTTER ENGINE AU DÉMARRAGE
     val flutterEngine = FlutterEngine(this)
     flutterEngine.dartExecutor.executeDartEntrypoint(
