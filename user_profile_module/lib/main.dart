@@ -26,8 +26,8 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue, useMaterial3: true),
-      // ✅ VÉRIFIE QUE C'EST BIEN getMainTabs()
-      home: MySDK.getMainTabs(),
+      // ✅ Affiche seulement le profil (pas les tabs)
+      home: Scaffold(body: MySDK.getProfileView()),
     );
   }
 }
