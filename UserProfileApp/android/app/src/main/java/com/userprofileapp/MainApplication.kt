@@ -8,6 +8,9 @@ import com.facebook.react.ReactPackage
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.load
 import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.soloader.SoLoader
+import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.embedding.engine.FlutterEngineCache
+import io.flutter.embedding.engine.dart.DartExecutor
 
 class MainApplication : Application(), ReactApplication {
 
@@ -15,10 +18,7 @@ class MainApplication : Application(), ReactApplication {
       object : DefaultReactNativeHost(this) {
         override fun getPackages(): List<ReactPackage> {
           val packages = PackageList(this).packages.toMutableList()
-          
-          // ✅ VÉRIFIE QUE CETTE LIGNE EST LÀ
           packages.add(FlutterBridgePackage())
-          
           return packages
         }
 
@@ -36,5 +36,12 @@ class MainApplication : Application(), ReactApplication {
     if (BuildConfig.IS_NEW_ARCHITECTURE_ENABLED) {
       load()
     }
+    
+    // ✅ INITIALISE FLUTTER ENGINE AU DÉMARRAGE
+    val flutterEngine = FlutterEngine(this)
+    flutterEngine.dartExecutor.executeDartEntrypoint(
+        DartExecutor.DartEntrypoint.createDefault()
+    )
+    FlutterEngineCache.getInstance().put("azeoo_flutter_engine", flutterEngine)
   }
 }

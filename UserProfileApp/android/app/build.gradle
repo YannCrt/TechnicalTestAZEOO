@@ -113,7 +113,7 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
-            applicationIdSuffix ".debug"
+            // applicationIdSuffix ".debug"
         }
         release {
             signingConfig signingConfigs.debug
