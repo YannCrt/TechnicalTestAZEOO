@@ -1,10 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:azeoosdk/src/notifiers/user_id_notifier.dart';
 import 'package:azeoosdk/src/services/user_service.dart';
 import 'package:azeoosdk/src/models/user.dart';
 
-class ProfilPage extends StatelessWidget {
+class ProfilPage extends StatefulWidget {
   const ProfilPage({super.key});
+
+  @override
+  State<ProfilPage> createState() => _ProfilPageState();
+}
+
+class _ProfilPageState extends State<ProfilPage> {
+  static const platform = MethodChannel('com.userprofileapp/userId');
+
+  @override
+  void initState() {
+    super.initState();
+    platform.setMethodCallHandler(_handleMethod);
+  }
+
+  Future<void> _handleMethod(MethodCall call) async {
+    if (call.method == 'setUserId') {
+      final int userId = call.arguments;
+      userIdNotifier.value = userId;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +60,6 @@ class ProfilPage extends StatelessWidget {
             }
 
             final user = snapshot.data!;
-
             final profilePic =
                 (user.picture != null && user.picture!.isNotEmpty)
                 ? user.picture!.first.url
@@ -67,7 +87,6 @@ class ProfilPage extends StatelessWidget {
                             : null,
                       ),
                       const SizedBox(height: 20),
-
                       Text(
                         "${user.firstName} ${user.lastName}",
                         style: const TextStyle(
@@ -76,7 +95,6 @@ class ProfilPage extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 8),
-
                       Text(
                         user.email,
                         style: const TextStyle(
@@ -85,32 +103,27 @@ class ProfilPage extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 8),
-
                       Text(
                         "ID : ${user.id}",
                         style: const TextStyle(fontSize: 18),
                       ),
                       const SizedBox(height: 8),
-
                       Text(
                         "Anniversaire : ${user.birthday?.value ?? 'Pas de date'}",
                         style: const TextStyle(fontSize: 18),
                       ),
                       const SizedBox(height: 8),
-
                       Text(
                         "Genre : ${user.gender ?? 'Non spécifié'}",
                         style: const TextStyle(fontSize: 18),
                       ),
                       const SizedBox(height: 8),
-
                       Text(
                         "Information : ${user.info ?? 'Aucune information'}",
                         style: const TextStyle(fontSize: 18),
                         textAlign: TextAlign.center,
                       ),
                       const SizedBox(height: 16),
-
                       if (user.countryFlag != null)
                         Image.network(
                           user.countryFlag!,

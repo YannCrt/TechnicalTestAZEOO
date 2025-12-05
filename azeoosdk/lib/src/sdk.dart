@@ -1,5 +1,5 @@
 import 'sdk_config.dart';
-import 'widgets/main_tabs.dart';
+import 'views/profil_page.dart';
 import 'package:flutter/material.dart';
 
 class MySDK {
@@ -16,11 +16,13 @@ class MySDK {
     return _config!;
   }
 
-  static Widget getMainTabs() {
+  // ✅ NOUVELLE MÉTHODE : retourne seulement le profil
+  static Widget getProfileView() {
     if (_config == null) {
-      throw Exception("MySDK.init(config) must be called before getMainTabs()");
+      throw Exception(
+        "MySDK.init(config) must be called before getProfileView()",
+      );
     }
-    // ✅ ENLÈVE LE const ICI
-    return MainTabs();
+    return const ProfilPage();
   }
 }
