@@ -1,3 +1,5 @@
+import 'package:azeoosdk/src/widgets/main_tabs.dart';
+
 import 'sdk_config.dart';
 import 'views/profil_page.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +25,6 @@ class MySDK {
         "MySDK.init(config) must be called before getProfileView()",
       );
     }
-    return const ProfilPage();
+    return const MainTabs(); // envoyer à l'app react native mes données
   }
 }
